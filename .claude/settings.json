@@ -1,0 +1,13 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write",
+        "hooks": [{
+          "type": "prompt",
+          "prompt": "Si has modificado o creado un fichero .tf, genera o actualiza el README.md de esa plantilla"
+        }]
+      }
+    ]
+  }
+}

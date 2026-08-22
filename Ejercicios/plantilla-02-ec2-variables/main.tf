@@ -18,6 +18,6 @@ resource "aws_instance" "servidor" {
   tags = {
     Name    = "kit-${var.nombre_alumno}"
     Owner   = var.nombre_alumno
-    Project = "kit-supervivencia"
+    Project = "kit-de-superviviencia"
   }
 }
