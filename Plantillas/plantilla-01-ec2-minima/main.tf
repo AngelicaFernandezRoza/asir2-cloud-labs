@@ -21,14 +21,14 @@ resource "aws_instance" "mi_servidor" {
   # AMI = "plantilla de sistema operativo" con la que arranca la máquina.
   # Este valor es un marcador de posición: hay que sustituirlo por el ID
   # real de una AMI de la región us-east-1 antes de aplicar la plantilla.
-  ami = "ami-XXXXXXXXXX"
+  ami = "ami-0b6d9d3d33ba97d99"
 
   # Tamaño de la máquina (CPU/RAM). t2.micro es el más pequeño y suele
   # estar cubierto por la capa gratuita de AWS.
-  instance_type = "t2.micro"
+  instance_type = "t3.micro"
 
   # Etiquetas para identificar el recurso en la consola de AWS.
   tags = {
-    Name = "kit-plantilla1"
+    Name = "ec2-minima"
   }
 }
