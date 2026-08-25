@@ -1,34 +1,30 @@
-# Le dice a Terraform qué plugin (provider) necesita para hablar con AWS
-# y en qué versión. Sin esto, Terraform no sabe cómo traducir el código
-# a llamadas a la API de AWS.
+# Bloque de configuracion de Terraform: aqui se indica que "proveedor"
+# (plugin) necesita este proyecto para hablar con AWS.
 terraform {
   required_providers {
     aws = {
-      source  = "hashicorp/aws"
-      version = "~> 5.0"
+      source  = "hashicorp/aws" # de donde se descarga el plugin de AWS
+      version = "~> 5.0"        # version del plugin (5.x, cualquier version menor)
     }
   }
 }
 
-# Configura el provider de AWS: región donde se crearán todos los
-# recursos de este fichero. us-east-1 es la región de Virginia (EE. UU.).
+# Bloque "provider": configura el plugin de AWS.
+# region indica en que zona geografica de AWS se van a crear los recursos.
 provider "aws" {
-  region = "us-east-1"
+  region = "us-east-1" # Norte de Virginia (EE.UU.)
 }
 
-# Crea la máquina virtual (instancia EC2) que es el objetivo de esta plantilla.
+# Bloque "resource": aqui se define QUE se va a crear.
+# "aws_instance" es el tipo de recurso (una maquina virtual EC2).
+# "mi_servidor" es el nombre que le damos nosotros dentro de Terraform
+# (solo se usa para referenciarlo en este proyecto, no es el nombre real en AWS).
 resource "aws_instance" "mi_servidor" {
-  # AMI = "plantilla de sistema operativo" con la que arranca la máquina.
-  # Este valor es un marcador de posición: hay que sustituirlo por el ID
-  # real de una AMI de la región us-east-1 antes de aplicar la plantilla.
-  ami = "ami-0b6d9d3d33ba97d99"
+  ami           = "ami-XXXXXXXXXX" # Sustituye por una AMI valida en us-east-1
+  instance_type = "t2.micro"       # Tipo de maquina: t2.micro = capa gratuita
 
-  # Tamaño de la máquina (CPU/RAM). t2.micro es el más pequeño y suele
-  # estar cubierto por la capa gratuita de AWS.
-  instance_type = "t3.micro"
-
-  # Etiquetas para identificar el recurso en la consola de AWS.
+  # Etiquetas: metadatos para identificar el recurso en la consola de AWS.
   tags = {
-    Name = "ec2-minima"
+    Name = "kit-plantilla1"
   }
 }
