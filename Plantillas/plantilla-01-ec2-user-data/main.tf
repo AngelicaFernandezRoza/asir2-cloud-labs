@@ -26,6 +26,15 @@ resource "aws_instance" "mi_servidor" {
   # Nombre de la key pair ya existente en la cuenta de AWS Academy (Vocareum). 
   key_name = "vockey"
 
+  # User data: script que se ejecuta al iniciar la instancia EC2 por primera vez.
+  user_data = <<-EOF
+            #!/bin/bash
+            apt update
+            apt install -y nginx
+            EOF
+
+
+
   # Etiquetas: metadatos para identificar el recurso en la consola de AWS.
   
   tags = {
