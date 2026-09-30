@@ -15,6 +15,27 @@ provider "aws" {
   region = "us-east-1" # Norte de Virginia (EE.UU.)
 }
 
+# Crea un grupo de seguridad para controlar el tráfico de red de la instancia.
+resource "aws_security_group" "permitir_ssh" {
+  name = "permitir-ssh"
+
+  # Permite conexiones SSH entrantes por el puerto 22 desde cualquier IPv4.
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # Permite que la instancia inicie conexiones salientes.
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
 # Bloque "resource": aqui se define QUE se va a crear.
 # "aws_instance" es el tipo de recurso (una maquina virtual EC2).
 # "mi_servidor" es el nombre que le damos nosotros dentro de Terraform
@@ -26,16 +47,18 @@ resource "aws_instance" "mi_servidor" {
   # Nombre de la key pair ya existente en la cuenta de AWS Academy (Vocareum). 
   key_name = "vockey"
 
-  # User data: script que se ejecuta al iniciar la instancia EC2 por primera vez.
-  user_data = <<-EOF
-            #!/bin/bash
-            apt update
-            apt install -y nginx
-            EOF
+  # Asocia a la instancia el grupo de seguridad que permite el acceso SSH.
+  vpc_security_group_ids = [aws_security_group.permitir_ssh.id]
 
+  # Ejecuta este script al iniciar la instancia por primera vez; instala Nginx.
+  user_data = <<-EOF
+    #!/bin/bash
+    apt-get update
+    apt-get install -y nginx
+  EOF
 
   # Etiquetas: metadatos para identificar el recurso en la consola de AWS.
-  
+
   tags = {
     Name = "kit-plantilla1"
   }
