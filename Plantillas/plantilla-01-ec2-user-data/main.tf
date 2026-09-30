@@ -34,7 +34,6 @@ resource "aws_instance" "mi_servidor" {
             EOF
 
 
-
   # Etiquetas: metadatos para identificar el recurso en la consola de AWS.
   
   tags = {
